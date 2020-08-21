@@ -12,6 +12,7 @@ const server = http.createServer((req, res) => {
         res.write("</html>");
         return res.end();
     }
+    
     if (url === "/users") {
         res.setHeader('Content-Type', 'text/html');
         res.write("<html>");
