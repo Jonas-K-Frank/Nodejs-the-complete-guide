@@ -1,18 +1,21 @@
+const path = require('path');
+
 const express = require('express');
+const bodyParser = require('body-parser');
 
 const expressApp = express();
 
-expressApp.use('/',(req, res, next) => {
-    console.log("This always runs because it is on top");
-    next();
-});
+const adminRoute = require('./routes/admin')
+const shopRoute = require('./routes/shop')
 
-expressApp.use('/add-product',(req, res, next) => {
-    res.send("<h2>Add a product</h2>");
-});
+expressApp.use(bodyParser.urlencoded({extended: false}));
+expressApp.use(express.static(path.join(__dirname, 'public')));
 
-expressApp.use('/',(req, res, next) => {
-    res.send("<h1>Hello from express</h1>");
+expressApp.use('/admin', adminRoute);
+expressApp.use(shopRoute);
+
+expressApp.use((req, res, next) => {
+res.status(404).sendFile(path.join(__dirname, 'views', '404.html'));
 });
 
 expressApp.listen(3000);
